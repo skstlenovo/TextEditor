@@ -79,7 +79,7 @@ class editor extends JFrame implements ActionListener{
         {
             t.setText("");
         }
-        else if(s.equals("Open")
+        else if(s.equals("Open"))
         {
             JFileChooser j=new JFileChooser("c:");
             int r= j.showOpenDialog(null);
@@ -87,38 +87,73 @@ class editor extends JFrame implements ActionListener{
             {
                 File fi=new File(j.getSelectedFile().getAbsolutePath());
                 try{
-                    String s1="";
+                    String s1="",s2="";
                     FileReader fr=new FileReader(fi);
-                    
+                    BufferedReader br=new BufferedReader(fr);
+                    s2=br.readLine();
+                    while((s1=br.readLine())!=null)
+                    {
+                        s2=s2+"\n"+s1;
+                    }
+                    t.setText(s2);
+                }
+                catch(Exception et)
+                {
+                    JOptionPane.showMessageDialog(f,et.getMessage());
                 }
             }
+            else
+                JOptionPane.showMessageDialog(f,"Operation Cancelled");
 
         }
         else if(s.equals("Save"))
         {
-
+            JFileChooser j = new JFileChooser("c:");
+            int r=j.showSaveDialog(null);
+            if(r==JFileChooser.APPROVE_OPTION)
+            {
+                File fi=new File(j.getSelectedFile().getAbsolutePath());
+                try{
+                    FileWriter wr=new FileWriter(fi);
+                    BufferedWriter bw=new BufferedWriter(wr);
+                    bw.write(t.getText());
+                    bw.flush();
+                    bw.flush();
+                }
+                catch(Exception et)
+                {
+                    JOptionPane.showMessageDialog(f,et.getMessage());
+                }
+            }
+            else
+                JOptionPane.showMessageDialog(f,"Operation Cancelled");
         }
         else if(s.equals("Print"))
         {
-
+            try{
+                t.print();
+                }
+            catch(Exception et)
+            {
+                JOptionPane.showMessageDialog(f,et.getMessage());
+            }
         }
         else if(s.equals("Cut"))
         {
-
+            t.cut();
         }
         else if(s.equals("Copy"))
         {
-
+            t.copy();
         }
-        else if(s.equals("Past"))
+        else if(s.equals("Paste"))
         {
-
+            t.paste();
         }
         else if(s.equals("Exit"))
         {
-
+            f.setVisible(false);
         }
-
     }
     public static void main(String []args){
         editor e=new editor();
